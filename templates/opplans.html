@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="row">
+        <h1 style="text-align: center;">{{name}}</h1>
+     </div>
+     <div class="row" style="margin-bottom: 10%;">
+         <div class="col-md-6">
+             <div id = "plans" style=" display: flex;  justify-content: center;"></div>
+         </div>
+     
+     </div>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ 
+ 
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+     <script>
+         var endpoint = '/api/plans/{{name}}';
+         $.ajax({
+     method: "GET",
+     url: endpoint,
+     success: function(data) {
+         showplans(data,'plans');
+     },
+ 
+     })
+ 
+     var table = document.createElement('TABLE');
+     function showplans(data,id){
+        console.log(data);
+         let thead = table.createTHead();
+         let row = thead.insertRow();
+ 
+         let heading = ["operator","plan","description"];
+         for(let key of heading){
+             let th = document.createElement("th");
+              let text = document.createTextNode(key);
+              th.appendChild(text);
+              row.appendChild(th);
+ 
+         }
+     
+        for (let element of data) {
+            let row = table.insertRow();
+             for (key in element) {
+              let cell = row.insertCell();
+             let text = document.createTextNode(element[key]);
+             cell.appendChild(text);
+     
+         }
+         let plan = document.getElementById(id)
+         plan.appendChild(table)
+ 
+     }
+ }
+ </script>
+    
+</body>
+</html>
